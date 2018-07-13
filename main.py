@@ -53,7 +53,23 @@ Builder.load_string('''
         rows: 12
         cols: 5
         padding: '20dp'
-        orientation: 'rl-bt'
+        orientation: 'lr-bt'
+
+    Label:
+        id: lbl
+        markup: True
+        size_hint: (.2, .05)
+        pos_hint: {'x':.4, 'y':.94}
+        font_size: '20dp'
+        font_name: 'arial.ttf'
+
+    Label:
+        id: lbl2
+        size_hint: (.2, .05)
+        pos_hint: {'x':.2, 'y':.935}
+        font_size: '20dp'
+
+
 
     StackLayout:
         id: kb
@@ -113,6 +129,7 @@ orange = Color(1, .4, 0, 1)
 red = Color(1, 0, 0, 1)
 gray = Color(.5, .5, .5, 1)
 white = Color(1, 1, 1, 1)
+#str(55).encode("utf-8").decode("utf-8")
 
 glb = 1
 glb2 = 1
@@ -203,7 +220,9 @@ class MdwButton(Button):
     def update(self):
 
         for i in range(0,10):
-            self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[9-i]))
+            #reversed
+            #self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[9-i]))
+            self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[i]))
             self.canvas.before.children[2+i*3].pos = [self.pos[0]+5,self.pos[1]+5]
             self.canvas.before.children[2+i*3].size = [(self.size[0]-5)*(1-float(i)/10),self.size[1]-5]
 
@@ -256,6 +275,8 @@ class Mdw(FloatLayout):
             wdg.ids.hizb_list.size_hint_x = 1
             wdg.ids.hizb_list.opacity = 1
             wdg.ismain_menu = 1
+            wdg.ids.lbl.text = u'\ufe8f\ufe8d\ufeaf\ufea3\ufef7\ufe8d'
+            wdg.ids.lbl2.text = ''
 
                 
     def hide_main(self, wdg):
@@ -268,6 +289,8 @@ class Mdw(FloatLayout):
             for i in range(1,11):
                 wdg.ids.kb.children[i-1].text = str(i+1+((int(glb)-1)*10))
                 wdg.ids.kb.children[i-1].col_val = wdg.ids.hizb_list.children[glb-1].g_list[i-1]
+            wdg.ids.lbl.text = u'\ufe8f\ufeaf\ufea4\ufedf\ufe8d\u0020\ufe95\ufe8e\ufea4\ufed4\ufebb'
+            wdg.ids.lbl2.text = str(glb)
 
     def col_upg(self, wdg):
         wdg.ids.hizb_list.children[glb-1].g_list[(glb2-2)%10] += 1

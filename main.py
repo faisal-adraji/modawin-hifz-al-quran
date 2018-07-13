@@ -381,12 +381,19 @@ class MdwApp(App):
 
 
         #restore last session
-        f = open("save.dat")
-        for i in range(0,60):
-            for j in range(0,10):
-                self.wdg.ids.hizb_list.children[i].g_list[j] = int(f.readline())
-
-        f.close()
+        try:
+            f = open("save.dat")
+        except :
+            # save file don't exist
+            for i in range(0,60):
+                for j in range(0,10):
+                    self.wdg.ids.hizb_list.children[i].g_list[j] = 0
+        else:
+            # save file exists
+            for i in range(0,60):
+                for j in range(0,10):
+                    self.wdg.ids.hizb_list.children[i].g_list[j] = int(f.readline())
+            f.close()
         
         Clock.schedule_interval(main_wdg.update, 1.0 / 60.0)
         return main_wdg

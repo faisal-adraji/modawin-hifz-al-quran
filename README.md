@@ -1,4 +1,6 @@
 # modawin-hifz-al-quran
+![modawin](modawin.png)
+
 app for register progress of memorization of quran
 
 

@@ -2,7 +2,14 @@
 app for register progress of memorization of quran
 
 
-![demo](demo.png)
+
+![demo1](demo1.png)
+
+
+
+
+![demo2](demo2.png)
+
 
 
 ## utilities used

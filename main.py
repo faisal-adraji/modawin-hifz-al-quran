@@ -42,6 +42,7 @@ from kivy.lang import Builder
 Builder.load_string('''
 <Mdw>:
 
+#main menu
 
     Button:
         id:quit
@@ -66,10 +67,10 @@ Builder.load_string('''
     Label:
         id: lbl2
         size_hint: (.2, .05)
-        pos_hint: {'x':.2, 'y':.935}
+        pos_hint: {'x':.15, 'y':.935}
         font_size: '20dp'
 
-
+#sub list
 
     StackLayout:
         id: kb
@@ -135,6 +136,60 @@ glb = 1
 glb2 = 1
 
 
+
+
+class MdwButton(Button):
+    g_list = []    
+
+    def __init__(self, **kwargs):
+        super(MdwButton, self).__init__(**kwargs)
+        self.g_list = [0,0,0,0,0, 0,0,0,0,0]
+        #def on_size(self, *args):
+        self.canvas.before.clear()
+        for i in range(0,10):
+            with self.canvas.before:
+                Color(0, 0, 1, 1)
+                Rectangle(pos=(self.pos[0],self.pos[1]), size=(self.size[0]*(1-float(i)/10),self.size[1]))
+    
+    def set_glist(self, idx, val):
+        self.g_list[idx] = val
+
+        
+    def get_color(self, val):
+        if val == 0:
+            return Color(.5, .5, .5, 1)
+        if val == 1:
+            return Color(1, 0, 0, 1)
+        if val == 2:
+            return Color(1, .4, 0, 1)
+        if val == 3:
+            return Color(1, 1, 0, 1)
+        if val == 4:
+            return Color(0, 1, 0, 1)
+        if val == 5:
+            return Color(0, 0, 1, 1)
+
+    def set_mnu(self,instance):
+        global glb
+        glb = int(self.text)
+
+    # def prep_sub_menu(self):
+    #     wdg.clkd_id = int(self.text)
+        # for i in range(1,11):
+        #     wdg.ids.kb.children[i-1].text = str(i+1+((int(self.text)-1)*10))
+
+
+    def update(self):
+
+        for i in range(0,10):
+            #reversed
+            #self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[9-i]))
+            self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[i]))
+            self.canvas.before.children[2+i*3].pos = [self.pos[0]+5,self.pos[1]+5]
+            self.canvas.before.children[2+i*3].size = [(self.size[0]-5)*(1-float(i)/10),self.size[1]-5]
+
+
+
 class MdwSubButton(Button):
     col_val = 0
 
@@ -177,57 +232,6 @@ class MdwSubButton(Button):
 
 
 
-class MdwButton(Button):
-    g_list = []    
-
-    def __init__(self, **kwargs):
-        super(MdwButton, self).__init__(**kwargs)
-        self.g_list = [0,0,0,0,0, 0,0,0,0,0]
-        #def on_size(self, *args):
-        self.canvas.before.clear()
-        for i in range(0,10):
-            with self.canvas.before:
-                Color(0, 0, 1, 1)
-                Rectangle(pos=(self.pos[0],self.pos[1]), size=(self.size[0]*(1-float(i)/10),self.size[1]))
-    
-    def set_glist(self, idx, val):
-        self.g_list[idx] = val
-
-        
-    def get_color(self, val):
-        if val == 0:
-            return Color(.5, .5, .5, 1)
-        if val == 1:
-            return Color(1, 0, 0, 1)
-        if val == 2:
-            return Color(1, .4, 0, 1)
-        if val == 3:
-            return Color(1, 1, 0, 1)
-        if val == 4:
-            return Color(0, 1, 0, 1)
-        if val == 5:
-            return Color(0, 0, 1, 1)
-    def set_mnu(self,instance):
-        global glb
-        glb = int(self.text)
-
-    # def prep_sub_menu(self):
-    #     wdg.clkd_id = int(self.text)
-        # for i in range(1,11):
-        #     wdg.ids.kb.children[i-1].text = str(i+1+((int(self.text)-1)*10))
-
-
-    def update(self):
-
-        for i in range(0,10):
-            #reversed
-            #self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[9-i]))
-            self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[i]))
-            self.canvas.before.children[2+i*3].pos = [self.pos[0]+5,self.pos[1]+5]
-            self.canvas.before.children[2+i*3].size = [(self.size[0]-5)*(1-float(i)/10),self.size[1]-5]
-
-
-
 
 class Mdw(FloatLayout):
 
@@ -245,10 +249,13 @@ class Mdw(FloatLayout):
             self.show_main(self)
             self.hide_guide()
             self.isfirsttime = 0
-        for i in range(0,60):
-            self.ids.hizb_list.children[i].update()
-        for i in range(0,12):
-            self.ids.kb.children[i].update()
+
+        if self.ismain_menu:
+            for i in range(0,60):
+                self.ids.hizb_list.children[i].update()
+        else:
+            for i in range(0,12):
+                self.ids.kb.children[i].update()
         
 
         # btn = self.ids.btn
@@ -371,11 +378,11 @@ class MdwApp(App):
             obj.bind(on_press= col_upg)
             obj.bind(on_press= obj.set_mnu2)
 
-        obj = MdwSubButton(text= "<=", size_hint= (.8, .13), background_color= (0, 0, 0, 1) )
+        obj = MdwSubButton(text= "<--", size_hint= (.8, .13), background_color= (0, 0, 0, 1) )
         kb.add_widget(obj, len(kb.children))
         obj.bind(on_press= show_main)
 
-        obj = MdwSubButton(text= "xO", size_hint= (.2, .13), background_color= (0, 0, 0, 1) )
+        obj = MdwSubButton(text= "O\nX", padding= ('90dp','90dp'), size_hint= (.2, .13), background_color= (0, 0, 0, 1) )
         kb.add_widget(obj, len(kb.children))
         obj.bind(on_press= reset)
 

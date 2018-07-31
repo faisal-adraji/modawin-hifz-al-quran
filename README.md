@@ -33,7 +33,7 @@ init buildozer
 
 buildozer -v android debug
 
-mv .buildozer/android/platform/build/dists/Quran/bin/Quran-tin-0.1-debug.apk .
+mv .buildozer/android/platform/build/dists/modawin/bin/modawinhifzalquran-0.1-debug.apk .
 
 ## contributions are welcome
 

@@ -3,16 +3,13 @@
 
 app for register progress of memorization of quran
 
-
-
 ![demo1](demo1.png)
-
-
-
 
 ![demo2](demo2.png)
 
+## download
 
+#### modawin-hifz-al-quran v1.0.apk (7.7 M) : [download here](https://archive.org/download/modawin/modawin-hifz-al-quran-1.0.apk)
 
 ## utilities used
 
@@ -42,7 +39,7 @@ init buildozer
 
 buildozer -v android debug
 
-mv .buildozer/android/platform/build/dists/modawin/bin/modawinhifzalquran-0.1-debug.apk .
+mv .buildozer/android/platform/build/dists/lina/bin/modawinhifzalquran-1.0-debug.apk .
 
 ## contributions are welcome
 

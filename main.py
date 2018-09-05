@@ -1,13 +1,11 @@
 '''
 author  :   Faisal Adraji
 email   :   faisal.adraji@gmail.com
-version :   0.0
-start   :   27-05-2017
+version :   1.0
 kivy.require("1.9.0")
+kivy.used("1.10.0")
 '''
-
-
-# import threading
+#for using kivy
 import kivy
 kivy.require("1.9.0")
 
@@ -16,33 +14,25 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
+#graphics anwidgets and others kivy modules
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
+from kivy.lang import Builder
+from kivy.metrics import sp, dp
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.stacklayout import StackLayout
 from kivy.uix.image import Image
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.widget import Widget
 
-from kivy.metrics import sp, dp
 
-
-# BLUE= Color(0, 0, 1, 1)
-# GREEN= Color(0, 1, 0, 1)
-# YELLOW= Color(1, 1, 0, 1)
-# ORANGE= Color(1, .5, 0, 1)
-# RED= Color(1, 0, 0, 1)
-
-
-from kivy.lang import Builder
-
+#build app with kv language
 Builder.load_string('''
 <Mdw>:
 
-#main menu
+#main menu, list of ahzab
 
     Button:
         id:quit
@@ -70,7 +60,7 @@ Builder.load_string('''
         pos_hint: {'x':.15, 'y':.935}
         font_size: '20dp'
 
-#sub list
+#sub list, when selecting a hizb in main menu
 
     StackLayout:
         id: kb
@@ -83,17 +73,7 @@ Builder.load_string('''
         orientation: 'lr-bt'
 
 
-
-
-    # MdwButton:
-    #     id: btn
-    #     text: 'l'
-    #     background_color: 0, 0, 0, 0
-    #     size_hint: (.2, .2)
-    #     on_press: root.func()
-
-
-#guide
+#legend, opened when you touch background
 
     FloatLayout:
         id: lgd
@@ -130,14 +110,16 @@ orange = Color(1, .4, 0, 1)
 red = Color(1, 0, 0, 1)
 gray = Color(.5, .5, .5, 1)
 white = Color(1, 1, 1, 1)
-#str(55).encode("utf-8").decode("utf-8")
 
+#globals variable used for dialog between classes of the app
 glb = 1
 glb2 = 1
 
-
-
-
+'''
+abreviation of modawin button this class is a
+button with ten partq that can take a different
+colors, so it can sumarise the colors of it sub-menu buttons
+'''
 class MdwButton(Button):
     g_list = []    
 
@@ -153,8 +135,7 @@ class MdwButton(Button):
     
     def set_glist(self, idx, val):
         self.g_list[idx] = val
-
-        
+ 
     def get_color(self, val):
         if val == 0:
             return Color(.5, .5, .5, 1)
@@ -169,18 +150,15 @@ class MdwButton(Button):
         if val == 5:
             return Color(0, 0, 1, 1)
 
+    '''
+    this function tell the number of the button 
+    pressed in hizb list through glb variable
+    '''
     def set_mnu(self,instance):
         global glb
         glb = int(self.text)
 
-    # def prep_sub_menu(self):
-    #     wdg.clkd_id = int(self.text)
-        # for i in range(1,11):
-        #     wdg.ids.kb.children[i-1].text = str(i+1+((int(self.text)-1)*10))
-
-
     def update(self):
-
         for i in range(0,10):
             #reversed
             #self.canvas.before.children[0+i*3] = self.get_color(int(self.g_list[9-i]))
@@ -189,8 +167,12 @@ class MdwButton(Button):
             self.canvas.before.children[2+i*3].size = [(self.size[0]-5)*(1-float(i)/10),self.size[1]-5]
 
 
-
+'''
+abreviation of modawin sub-button, this class is a
+button that upgrade color in each press from gray to blue
+'''
 class MdwSubButton(Button):
+    #color values take a look at get_color function
     col_val = 0
 
     def __init__(self, **kwargs):
@@ -205,32 +187,38 @@ class MdwSubButton(Button):
     def set_glist(self, val):
         self.col_val = val
 
-        
     def get_color(self, val):
         if val == 0:
+            #gray
             return Color(.5, .5, .5, 1)
         if val == 1:
+            #red
             return Color(1, 0, 0, 1)
         if val == 2:
+            #orange
             return Color(1, .4, 0, 1)
         if val == 3:
+            #yellow
             return Color(1, 1, 0, 1)
         if val == 4:
+            #green
             return Color(0, 1, 0, 1)
         if val == 5:
+            #blue
             return Color(0, 0, 1, 1)
 
+    '''
+    this function tell the number of pressed
+    button through glb2 variable
+    '''
     def set_mnu2(self,instance):
         global glb2
         glb2 = int(self.text)
-
 
     def update(self):
         self.canvas.before.children[0] = self.get_color(int(self.col_val))
         self.canvas.before.children[2].pos = [self.pos[0]+5,self.pos[1]+5]
         self.canvas.before.children[2].size = [self.size[0]-5,self.size[1]-5]
-
-
 
 
 class Mdw(FloatLayout):
@@ -248,6 +236,7 @@ class Mdw(FloatLayout):
             self.hide_main(self)
             self.show_main(self)
             self.hide_guide()
+            #print(kivy.__version__)
             self.isfirsttime = 0
 
         if self.ismain_menu:
@@ -257,24 +246,6 @@ class Mdw(FloatLayout):
             for i in range(0,12):
                 self.ids.kb.children[i].update()
         
-
-        # btn = self.ids.btn
-        # btn2 = self.ids.btn2
-
-        # btn.set_glist(1,1)
-        # btn2.set_glist(2,1)
-
-
-        # for i in range(0,10):
-        #     btn.canvas.before.children[0+i*3] = btn.grade[btn.g_list[i]]
-        # for i in range(0,10):
-        #     btn2.canvas.before.children[0+i*3] = btn2.grade[btn2.g_list[i]]
-
-
-        #self.ids.btn.rect.pos = self.pos
-        #self.ids.btn.rect.size = self.size
-    
-
     def show_main(self, wdg):
         if not wdg.ismain_menu:
             wdg.ids.kb.opacity = 0
@@ -284,8 +255,7 @@ class Mdw(FloatLayout):
             wdg.ismain_menu = 1
             wdg.ids.lbl.text = u'\ufe8f\ufe8d\ufeaf\ufea3\ufef7\ufe8d'
             wdg.ids.lbl2.text = ''
-
-                
+     
     def hide_main(self, wdg):
         if wdg.ismain_menu:
             wdg.ids.hizb_list.opacity = 0
@@ -299,6 +269,7 @@ class Mdw(FloatLayout):
             wdg.ids.lbl.text = u'\ufe8f\ufeaf\ufea4\ufedf\ufe8d\u0020\ufe95\ufe8e\ufea4\ufed4\ufebb'
             wdg.ids.lbl2.text = str(glb)
 
+    #this function increment the color index of the button pressed
     def col_upg(self, wdg):
         wdg.ids.hizb_list.children[glb-1].g_list[(glb2-2)%10] += 1
         # wdg.ids.hizb_list.children[glb-1].g_list[(glb2-2)%10] %= 6
@@ -306,6 +277,7 @@ class Mdw(FloatLayout):
             wdg.ids.hizb_list.children[glb-1].g_list[(glb2-2)%10] = 5
         wdg.ids.kb.children[(glb2-2)%10].col_val = wdg.ids.hizb_list.children[glb-1].g_list[(glb2-2)%10]
 
+    #set color to 0 (gray)
     def reset(self, wdg):
         for i in range(1,11):
             wdg.ids.hizb_list.children[glb-1].g_list[i-1] = 0
@@ -326,13 +298,9 @@ class Mdw(FloatLayout):
             self.islgd = 0
 
 
-
-
-        
 class MdwApp(App):
 
     def build(self):
-
         Window.set_title('modawin_al_hifz')
         self.title = 'modawin_al_hifz'
         #self.icon = 'tin.png'
@@ -341,14 +309,6 @@ class MdwApp(App):
         hizb_list = self.wdg.ids.hizb_list
         kb = self.wdg.ids.kb
         lgd = self.wdg.ids.lgd
-
-
-        # btn = self.wdg.ids.btn
-        # btn2 = self.wdg.ids.btn2
-
-        # self.wdg.ids.btn.set_glist(0,2)
-
-
 
         
         def show_main(instance):
@@ -387,7 +347,7 @@ class MdwApp(App):
         obj.bind(on_press= reset)
 
 
-        #restore last session
+        #restore last session auto-save if exist
         try:
             f = open("save.dat")
         except :
@@ -402,7 +362,8 @@ class MdwApp(App):
                     self.wdg.ids.hizb_list.children[i].g_list[j] = int(f.readline())
             f.close()
         
-        Clock.schedule_interval(main_wdg.update, 1.0 / 60.0)
+        #fps of the app
+        Clock.schedule_interval(main_wdg.update, 1.0 / 30.0)
         return main_wdg
 
 
